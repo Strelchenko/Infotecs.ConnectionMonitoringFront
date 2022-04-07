@@ -1,0 +1,14 @@
+{
+  "ExpandedNodes": [
+    "",
+    "\\src",
+    "\\src\\app",
+    "\\src\\app\\modules",
+    "\\src\\app\\modules\\monitoring",
+    "\\src\\app\\modules\\monitoring\\entity",
+    "\\src\\app\\modules\\monitoring\\pages",
+    "\\src\\app\\modules\\monitoring\\pages\\connections-list"
+  ],
+  "SelectedNode": "\\src\\app\\modules\\monitoring\\pages\\connections-list\\connections-list.component.html",
+  "PreviewInSolutionExplorer": false
+}
