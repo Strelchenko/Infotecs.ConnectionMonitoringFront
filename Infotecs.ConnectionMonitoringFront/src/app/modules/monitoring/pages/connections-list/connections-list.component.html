@@ -1,0 +1,36 @@
+<div class="page__connections_list">
+
+  <ng-container>
+      <table mat-table [dataSource]='dataSource' matSort matSortActive="userName" matSortDisableClear matSortDirection="asc">
+          <!-- UserName column -->
+          <ng-container matColumnDef="userName">
+              <th mat-header-cell *matHeaderCellDef mat-sort-header='userName'> Имя узла </th>
+              <td mat-cell *matCellDef="let connection"> {{ connection.userName }} </td>
+          </ng-container>
+
+          <!-- LastConnection column -->
+          <ng-container matColumnDef="lastConnection">
+              <th mat-header-cell *matHeaderCellDef> Дата последней статистики </th>
+              <td mat-cell *matCellDef="let connection"> {{ connection.lastConnection }} </td>
+          </ng-container>
+
+          <!-- AppVersion column -->
+          <ng-container matColumnDef="appVersion">
+              <th mat-header-cell *matHeaderCellDef> Версия Client </th>
+              <td mat-cell *matCellDef="let connection"> {{ connection.appVersion }} </td>
+          </ng-container>
+
+          <!-- OS column -->
+          <ng-container matColumnDef="os">
+              <th mat-header-cell *matHeaderCellDef> Тип устройства </th>
+              <td mat-cell *matCellDef="let connection"> {{ connection.os }} </td>
+          </ng-container>
+
+          <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+          <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+      </table>
+
+      <mat-paginator [pageSizeOptions]="[5, 10, 25, 100]"></mat-paginator>
+  </ng-container>
+
+</div>
