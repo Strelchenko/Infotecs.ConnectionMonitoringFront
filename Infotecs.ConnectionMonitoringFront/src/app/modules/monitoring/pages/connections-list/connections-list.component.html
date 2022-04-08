@@ -1,7 +1,7 @@
 <div class="page__connections_list">
 
-  <ng-container *ngIf="true">
-      <mat-table mat-table [dataSource]='dataSource' matSort matSortActive="userName" matSortDisableClear matSortDirection="asc">
+  <ng-container>
+      <table mat-table [dataSource]='dataSource' matSort matSortActive="userName" matSortDisableClear matSortDirection="asc">
           <!-- UserName column -->
           <ng-container matColumnDef="userName">
               <th mat-header-cell *matHeaderCellDef mat-sort-header='userName'> Имя узла </th>
@@ -28,7 +28,7 @@
 
           <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
           <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
-      </mat-table>
+      </table>
 
       <mat-paginator [pageSizeOptions]="[5, 10, 25, 100]"></mat-paginator>
   </ng-container>
