@@ -6,7 +6,7 @@ import { ConnectionInfoService } from 'src/generated-api/services/connection-inf
 import { ConnectionInfoModel } from '../../entity/connection-info-model';
 
 @Component({
-  selector: 'connections-list-page',
+  selector: 'connections-list',
   templateUrl: './connections-list.component.html',
   styleUrls: ['./connections-list.component.scss'],
   encapsulation: ViewEncapsulation.Emulated,
@@ -16,6 +16,7 @@ export class ConnectionsListComponent implements OnInit {
 
   public connections: ConnectionInfoModel[] = [];
   dataSource!: MatTableDataSource<ConnectionInfoModel>;
+  private selectedConnection: ConnectionInfoModel | null = null;
 
   displayedColumns: string[] = [
     'userName',
@@ -26,6 +27,7 @@ export class ConnectionsListComponent implements OnInit {
 
   @ViewChild(MatPaginator) paginator!: MatPaginator;
   @ViewChild(MatSort) sort!: MatSort;
+
 
   constructor(
     private connectionInfoService: ConnectionInfoService,
@@ -51,6 +53,10 @@ export class ConnectionsListComponent implements OnInit {
           }
         }
       );
+  }
+
+  public onGetEvents(connection: ConnectionInfoModel): void {
+    this.selectedConnection = connection;
   }
 
 }
