@@ -1,0 +1,38 @@
+<div class="page__events_list">
+
+  <ng-container *ngIf="selectedConnection">
+
+    <h1>{{selectedConnection.userName}}</h1>
+    <div>
+      <span>Идентификатор:</span>
+      <span>{{selectedConnection.id}}</span>
+    </div>
+    <div>
+      <span>Версия ПО VipNet Client:</span>
+      <span>{{selectedConnection.appVersion}}</span>
+    </div>
+    <h3>События VipNet Client</h3>
+
+    <table mat-table [dataSource]='dataSource' matSort matSortActive="eventTime" matSortDisableClear matSortDirection="asc">
+
+      <!-- EventTime column -->
+      <ng-container matColumnDef="eventTime">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header='eventTime'> Дата </th>
+        <td mat-cell *matCellDef="let event"> {{ event.eventTime }} </td>
+      </ng-container>
+
+      <!-- Name column -->
+      <ng-container matColumnDef="name">
+        <th mat-header-cell *matHeaderCellDef> Событие </th>
+        <td mat-cell *matCellDef="let event"> {{ event.name }} </td>
+      </ng-container>
+
+      <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+      <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+    </table>
+
+    <mat-paginator [pageSizeOptions]="[5, 10, 25, 100]"></mat-paginator>
+  </ng-container>
+
+</div>
+

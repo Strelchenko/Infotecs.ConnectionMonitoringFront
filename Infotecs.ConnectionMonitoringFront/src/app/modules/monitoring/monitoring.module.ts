@@ -6,12 +6,14 @@ import { ConnectionsListComponent } from './blocks/connections-list/connections-
 import {MatTableModule} from '@angular/material/table';
 import {MatPaginatorModule} from '@angular/material/paginator';
 import {MonitoringComponent} from './pages/monitoring/monitoring.component';
+import { EventsListComponent } from './blocks/events-list/events-list.component';
 
 
 @NgModule({
   declarations: [
     ConnectionsListComponent,
-    MonitoringComponent
+    MonitoringComponent,
+    EventsListComponent
   ],
   exports: [
     ConnectionsListComponent,

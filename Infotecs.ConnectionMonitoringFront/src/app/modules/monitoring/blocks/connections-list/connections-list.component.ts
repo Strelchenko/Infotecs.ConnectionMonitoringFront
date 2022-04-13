@@ -16,13 +16,11 @@ export class ConnectionsListComponent implements OnInit {
 
   public connections: ConnectionInfoModel[] = [];
   dataSource!: MatTableDataSource<ConnectionInfoModel>;
-  private selectedConnection: ConnectionInfoModel | null = null;
+  selectedConnection: ConnectionInfoModel | null = null;
 
   displayedColumns: string[] = [
     'userName',
     'lastConnection',
-    'appVersion',
-    'os',
   ];
 
   @ViewChild(MatPaginator) paginator!: MatPaginator;
@@ -43,8 +41,6 @@ export class ConnectionsListComponent implements OnInit {
         (response: any) => {
           try {
             this.connections = response;
-            console.log(response);
-            console.log(this.connections);
             this.dataSource = new MatTableDataSource(this.connections);
             this.dataSource.paginator = this.paginator;
             this.dataSource.sort = this.sort;
