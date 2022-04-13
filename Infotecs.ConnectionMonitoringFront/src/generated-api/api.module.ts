@@ -3,6 +3,7 @@ import { NgModule, ModuleWithProviders } from '@angular/core';
 import { HttpClientModule } from '@angular/common/http';
 import { ApiConfiguration, ApiConfigurationInterface } from './api-configuration';
 
+import { ConnectionEventService } from './services/connection-event.service';
 import { ConnectionInfoService } from './services/connection-info.service';
 
 /**
@@ -18,6 +19,7 @@ import { ConnectionInfoService } from './services/connection-info.service';
   declarations: [],
   providers: [
     ApiConfiguration,
+    ConnectionEventService,
     ConnectionInfoService
   ],
 })
