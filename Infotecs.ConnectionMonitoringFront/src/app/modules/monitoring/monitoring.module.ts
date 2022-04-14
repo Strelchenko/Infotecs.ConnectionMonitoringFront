@@ -2,17 +2,22 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 
 import { MonitoringRoutingModule } from './monitoring-routing.module';
-import { ConnectionsListComponent } from './pages/connections-list/connections-list.component';
-import {MatTableModule} from "@angular/material/table";
-import {MatPaginatorModule} from "@angular/material/paginator";
+import { ConnectionsListComponent } from './blocks/connections-list/connections-list.component';
+import {MatTableModule} from '@angular/material/table';
+import {MatPaginatorModule} from '@angular/material/paginator';
+import {MonitoringComponent} from './pages/monitoring/monitoring.component';
+import { EventsListComponent } from './blocks/events-list/events-list.component';
 
 
 @NgModule({
   declarations: [
-    ConnectionsListComponent
+    ConnectionsListComponent,
+    MonitoringComponent,
+    EventsListComponent
   ],
   exports: [
-    ConnectionsListComponent
+    ConnectionsListComponent,
+    MonitoringComponent
   ],
   imports: [
     CommonModule,

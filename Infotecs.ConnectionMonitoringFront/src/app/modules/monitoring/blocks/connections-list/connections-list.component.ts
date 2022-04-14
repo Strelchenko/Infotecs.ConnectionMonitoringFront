@@ -6,7 +6,7 @@ import { ConnectionInfoService } from 'src/generated-api/services/connection-inf
 import { ConnectionInfoModel } from '../../entity/connection-info-model';
 
 @Component({
-  selector: 'connections-list-page',
+  selector: 'connections-list',
   templateUrl: './connections-list.component.html',
   styleUrls: ['./connections-list.component.scss'],
   encapsulation: ViewEncapsulation.Emulated,
@@ -16,16 +16,16 @@ export class ConnectionsListComponent implements OnInit {
 
   public connections: ConnectionInfoModel[] = [];
   dataSource!: MatTableDataSource<ConnectionInfoModel>;
+  selectedConnection: ConnectionInfoModel | null = null;
 
   displayedColumns: string[] = [
     'userName',
     'lastConnection',
-    'appVersion',
-    'os',
   ];
 
   @ViewChild(MatPaginator) paginator!: MatPaginator;
   @ViewChild(MatSort) sort!: MatSort;
+
 
   constructor(
     private connectionInfoService: ConnectionInfoService,
@@ -41,8 +41,6 @@ export class ConnectionsListComponent implements OnInit {
         (response: any) => {
           try {
             this.connections = response;
-            console.log(response);
-            console.log(this.connections);
             this.dataSource = new MatTableDataSource(this.connections);
             this.dataSource.paginator = this.paginator;
             this.dataSource.sort = this.sort;
