@@ -5,7 +5,7 @@ import {MatTableDataSource} from '@angular/material/table';
 import {MatPaginator} from '@angular/material/paginator';
 import {MatSort} from '@angular/material/sort';
 import {ConnectionEventService} from '../../../../../generated-api/services/connection-event.service';
-import {BehaviorSubject} from 'rxjs';
+import {BehaviorSubject, map, tap} from 'rxjs';
 
 @Component({
   selector: 'events-list',
@@ -47,10 +47,11 @@ export class EventsListComponent implements OnInit {
 
   private getEventsList(connectionId: string): void {
     this.connectionEventService.getApiConnectionEvent(connectionId)
+      .pipe(tap((response) => this.events = response))
+      .pipe(map((value) => new MatTableDataSource(value)))
       .subscribe(
-        (response: any) => {
-          this.events = response;
-          this.dataSource = new MatTableDataSource(this.events);
+        (dataSource) => {
+          this.dataSource = dataSource;
           this.dataSource.paginator = this.paginator;
           this.dataSource.sort = this.sort;
         },
