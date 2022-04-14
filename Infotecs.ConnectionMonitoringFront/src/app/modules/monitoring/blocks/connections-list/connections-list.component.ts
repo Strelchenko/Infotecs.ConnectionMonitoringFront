@@ -51,8 +51,4 @@ export class ConnectionsListComponent implements OnInit {
       );
   }
 
-  public onGetEvents(connection: ConnectionInfoModel): void {
-    this.selectedConnection = connection;
-  }
-
 }

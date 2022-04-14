@@ -1,10 +1,11 @@
 import {Component, Input, OnInit, ViewChild} from '@angular/core';
 import {ConnectionEventModel} from '../../entity/connection-event-model';
-import { ConnectionInfoModel } from '../../entity/connection-info-model';
+import {ConnectionInfoModel} from '../../entity/connection-info-model';
 import {MatTableDataSource} from '@angular/material/table';
 import {MatPaginator} from '@angular/material/paginator';
 import {MatSort} from '@angular/material/sort';
 import {ConnectionEventService} from '../../../../../generated-api/services/connection-event.service';
+import {BehaviorSubject} from 'rxjs';
 
 @Component({
   selector: 'events-list',
@@ -16,18 +17,16 @@ export class EventsListComponent implements OnInit {
   public events: ConnectionEventModel[] = [];
   dataSource!: MatTableDataSource<ConnectionEventModel>;
   selectedConnection: ConnectionInfoModel | null = null;
+  selectedConnectionId = new BehaviorSubject<string | undefined | null>(null);
 
   displayedColumns: string[] = [
     'name',
     'eventTime',
   ];
 
-  @Input() set setSelectedConnection(selectedConnection: ConnectionInfoModel | null) {
+  @Input() set SelectedConnection(selectedConnection: ConnectionInfoModel | null) {
     this.selectedConnection = selectedConnection;
-
-    if(this.selectedConnection?.id !== null && this.selectedConnection?.id !== undefined) {
-      this.getEventsList(this.selectedConnection.id);
-    }
+    this.selectedConnectionId.next(selectedConnection?.id);
   }
 
   @ViewChild(MatPaginator) paginator!: MatPaginator;
@@ -35,28 +34,30 @@ export class EventsListComponent implements OnInit {
 
   constructor(
     private connectionEventService: ConnectionEventService,
-  ) { }
+  ) {
+  }
 
   ngOnInit(): void {
-    this.selectedConnection = null;
+    this.selectedConnectionId.subscribe(x => {
+      if (x) {
+        this.getEventsList(x);
+      }
+    });
   }
 
   private getEventsList(connectionId: string): void {
-      this.connectionEventService.getApiConnectionEvent(connectionId)
-        .subscribe(
-          (response: any) => {
-            try {
-              this.events = response;
-              console.log(response);
-              console.log(this.events);
-              this.dataSource = new MatTableDataSource(this.events);
-              this.dataSource.paginator = this.paginator;
-              this.dataSource.sort = this.sort;
-            } catch (e) {
-              console.error(e);
-            }
-          }
-        );
+    this.connectionEventService.getApiConnectionEvent(connectionId)
+      .subscribe(
+        (response: any) => {
+          this.events = response;
+          this.dataSource = new MatTableDataSource(this.events);
+          this.dataSource.paginator = this.paginator;
+          this.dataSource.sort = this.sort;
+        },
+        (errors) => {
+          console.error(errors);
+        }
+      );
   }
 
 }
