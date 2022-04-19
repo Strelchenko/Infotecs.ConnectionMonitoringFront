@@ -2,6 +2,11 @@
 
   <ng-container>
 
+    <section>
+      <mat-checkbox (change)='onCheckboxChange($event)' [checked]='(isAutoUpdate$ | async) ?? false'>Auto update data
+      </mat-checkbox>
+    </section>
+
     <table>
       <td>
         <table mat-table [dataSource]='dataSource' matSort matSortActive="userName" matSortDisableClear
