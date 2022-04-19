@@ -7,13 +7,14 @@ import {MatTableModule} from '@angular/material/table';
 import {MatPaginatorModule} from '@angular/material/paginator';
 import {MonitoringComponent} from './pages/monitoring/monitoring.component';
 import { EventsListComponent } from './blocks/events-list/events-list.component';
+import {MatCheckboxModule} from '@angular/material/checkbox';
 
 
 @NgModule({
   declarations: [
     ConnectionsListComponent,
     MonitoringComponent,
-    EventsListComponent
+    EventsListComponent,
   ],
   exports: [
     ConnectionsListComponent,
@@ -23,7 +24,8 @@ import { EventsListComponent } from './blocks/events-list/events-list.component'
     CommonModule,
     MonitoringRoutingModule,
     MatTableModule,
-    MatPaginatorModule
+    MatPaginatorModule,
+    MatCheckboxModule,
   ]
 })
 export class MonitoringModule { }
