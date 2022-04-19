@@ -1,10 +1,13 @@
-import {ChangeDetectionStrategy, Component, OnDestroy, OnInit, ViewChild, ViewEncapsulation} from '@angular/core';
-import {MatPaginator} from '@angular/material/paginator';
-import {MatSort} from '@angular/material/sort';
-import {MatTableDataSource} from '@angular/material/table';
-import {ConnectionInfoService} from 'src/generated-api/services/connection-info.service';
-import {ConnectionInfoModel} from '../../entity/connection-info-model';
-import {BehaviorSubject, interval, map, Observable, Subject, Subscription, takeUntil, tap} from 'rxjs';
+import { ChangeDetectionStrategy, Component, OnDestroy, OnInit, ViewChild, ViewEncapsulation } from '@angular/core';
+import { MatPaginator } from '@angular/material/paginator';
+import { MatSort } from '@angular/material/sort';
+import { MatTableDataSource } from '@angular/material/table';
+import { ConnectionInfoService } from 'src/generated-api/services/connection-info.service';
+import { ConnectionInfoModel } from '../../entity/connection-info-model';
+import { map, Subject, takeUntil, tap } from 'rxjs';
+import * as signalR from '@microsoft/signalr';
+import { HubConnection } from '@microsoft/signalr';
+import { ConnectionInfo } from '../../../../../generated-api/models/connection-info';
 
 @Component({
   selector: 'connections-list',
@@ -20,9 +23,7 @@ export class ConnectionsListComponent implements OnInit, OnDestroy {
   selectedConnection: ConnectionInfoModel | null = null;
   destroy$: Subject<boolean> = new Subject<boolean>();
 
-  isAutoUpdate$ = new BehaviorSubject(false);
-
-  subscription: Subscription | undefined;
+  signalRConnection: HubConnection | undefined;
 
   displayedColumns: string[] = [
     'userName',
@@ -39,6 +40,7 @@ export class ConnectionsListComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     this.getConnectionsList();
+    this.CreateSignalRConnection();
   }
 
   private getConnectionsList(): void {
@@ -58,21 +60,30 @@ export class ConnectionsListComponent implements OnInit, OnDestroy {
       );
   }
 
-  onCheckboxChange(e: any) {
-    const period = interval(30000);
-    if (e.checked) {
-      this.subscription = period
-        .pipe(takeUntil(this.destroy$))
-        .subscribe({
-          next: () => this.getConnectionsList(),
-          error: (error) => console.log('error: ', error)
-        });
-    } else {
-      this.subscription?.unsubscribe();
-    }
+  private CreateSignalRConnection(): void {
+    this.signalRConnection = new signalR.HubConnectionBuilder()
+      .configureLogging(signalR.LogLevel.Information)
+      .withUrl('https://localhost:7052/ConnectionInfoHub')
+      .build();
+
+    this.signalRConnection
+      .start()
+      .then(function () {
+        // eslint-disable-next-line no-console
+        console.info('SignalR connected');
+      }).catch(function (err) {
+      return console.error(err.toString());
+    });
+
+    this.signalRConnection.on('onNewConnectionInfoAdded', (data: ConnectionInfo) => {
+      const entity = {...data} as ConnectionInfoModel;
+      this.dataSource.data.push(entity);
+      this.dataSource.data = [...this.dataSource.data];
+    });
   }
 
   ngOnDestroy() {
+    this.signalRConnection?.stop();
     this.destroy$.next(true);
     this.destroy$.unsubscribe();
   }
