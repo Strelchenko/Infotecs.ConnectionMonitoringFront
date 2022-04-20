@@ -8,6 +8,7 @@ import { map, Subject, takeUntil, tap } from 'rxjs';
 import * as signalR from '@microsoft/signalr';
 import { HubConnection } from '@microsoft/signalr';
 import { ConnectionInfo } from '../../../../../generated-api/models/connection-info';
+import { environment } from '../../../../../environments/environment';
 
 @Component({
   selector: 'connections-list',
@@ -63,7 +64,7 @@ export class ConnectionsListComponent implements OnInit, OnDestroy {
   private CreateSignalRConnection(): void {
     this.signalRConnection = new signalR.HubConnectionBuilder()
       .configureLogging(signalR.LogLevel.Information)
-      .withUrl('https://localhost:7052/ConnectionInfoHub')
+      .withUrl(environment.baseUrl + '/ConnectionInfoHub')
       .build();
 
     this.signalRConnection

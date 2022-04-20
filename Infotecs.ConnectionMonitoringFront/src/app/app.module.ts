@@ -7,6 +7,7 @@ import { MonitoringModule } from './modules/monitoring/monitoring.module';
 import { MatTableModule } from '@angular/material/table';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import {ApiModule} from '../generated-api/api.module';
+import { environment } from '../environments/environment';
 
 @NgModule({
   declarations: [
@@ -18,7 +19,7 @@ import {ApiModule} from '../generated-api/api.module';
     MonitoringModule,
     MatTableModule,
     BrowserAnimationsModule,
-    ApiModule.forRoot({ rootUrl: 'https://localhost:7052' }),
+    ApiModule.forRoot({ rootUrl: environment.baseUrl }),
   ],
   providers: [],
   bootstrap: [AppComponent]
